@@ -1,0 +1,70 @@
+#!/bin/slug
+
+-- Implementation of the marching squares algorithm
+-- see https://en.wikipedia.org/wiki/Marching_squares
+
+ROWS = 100
+COLS = 100
+mt = {}
+
+function b(a, b, c, d)
+	return a*8 + b*4 + c*2 + d
+end
+
+function setup()
+	size(1000, 1000)
+	background(235)
+	stroke(0)
+	strokeWeight(1)
+	for y = 1, ROWS+1 do
+		mt[y] = {}
+		for x = 1, COLS+1 do
+			v = 0
+			if math.random() >= 0.5 then v = 1 end
+			mt[y][x] = v
+		end
+	end
+
+	cx = width / ROWS
+	cy = height / COLS
+	for y = 0, ROWS-1 do
+		for x = 0, COLS-1 do
+			n = b(mt[y+1][x+1], mt[y+1][x+2], mt[y+2][x+2], mt[y+2][x+1])
+			if n == 1 then
+				line(x*cx, (y+0.5)*cy, (x+0.5)*cx, (y+1)*cy)
+			elseif n == 2 then
+				line((x+1)*cx, (y+0.5)*cy, (x+0.5)*cx, (y+1)*cy)
+			elseif n == 3 then
+				line(x*cx, (y+0.5)*cy, (x+1)*cx, (y+0.5)*cy)
+			elseif n == 4 then
+				line((x+0.5)*cx, (y+0)*cy, (x+1)*cx, (y+0.5)*cy)
+			elseif n == 5 then
+				line((x)*cx, (y+0.5)*cy, (x+0.5)*cx, (y)*cy)
+				line((x+0.5)*cx, (y+1)*cy, (x+1)*cx, (y+0.5)*cy)
+			elseif n == 6 then
+				line((x+0.5)*cx, y*cy, (x+0.5)*cx, (y+1)*cy)
+			elseif n == 7 then
+				line(x*cx, (y+0.5)*cy, (x+0.5)*cx, y*cy)
+			elseif n == 8 then
+				line(x*cx, (y+0.5)*cy, (x+0.5)*cx, y*cy)
+			elseif n == 9 then
+				line((x+0.5)*cx, y*cy, (x+0.5)*cx, (y+1)*cy)
+			elseif n == 10 then
+				line((x+0.5)*cx, (y+0)*cy, (x+1)*cx, (y+0.5)*cy)
+				line(x*cx, (y+0.5)*cy, (x+0.5)*cx, (y+1)*cy)
+			elseif n == 11 then
+				line((x+0.5)*cx, (y+0)*cy, (x+1)*cx, (y+0.5)*cy)
+			elseif n == 12 then
+				line(x*cx, (y+0.5)*cy, (x+1)*cx, (y+0.5)*cy)
+			elseif n == 13 then
+				line((x+1)*cx, (y+0.5)*cy, (x+0.5)*cx, (y+1)*cy)
+			elseif n == 14 then
+				line(x*cx, (y+0.5)*cy, (x+0.5)*cx, (y+1)*cy)
+			end
+		end
+	end
+end
+
+function draw()
+	noLoop()
+end

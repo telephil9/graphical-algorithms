@@ -1,0 +1,51 @@
+#!/bin/slug
+
+-- Sierpinski triangle generation using the chaos game algorithm
+-- see https://en.wikipedia.org/wiki/Sierpi%C5%84ski_triangle#Chaos_game
+
+x0 = 0
+y0 = 0
+x1 = 0
+y1 = 0
+x2 = 0
+y2 = 0
+x  = 0
+y  = 0
+
+function setup()
+	size(800, 800)
+	x0 = width/2
+	y0 = 0
+	x1 = 0
+	y1 = height
+	x2 = width
+	y2 = height
+	x  = math.floor(math.random(width))
+	y  = math.floor(math.random(height))
+	background(0)
+	strokeWeight(2)
+	strokeCap(ROUND)
+end
+
+function draw()
+	for i = 1, 10 do
+		r = math.floor(math.random(3)) - 1
+		if r == 0 then
+			stroke(255, 0, 0)
+			x = math.floor(0.5 + math.lerp(x, x0, 0.5))
+			y = math.floor(0.5 + math.lerp(y, y0, 0.5))
+			circle(x, y, 1)
+		elseif r == 1 then
+			stroke(0, 255, 0)
+			x = math.floor(0.5 + math.lerp(x, x1, 0.5))
+			y = math.floor(0.5 + math.lerp(y, y1, 0.5))
+			circle(x, y, 1)
+		elseif r == 2 then
+			stroke(0, 0, 255)
+			x = math.floor(0.5 + math.lerp(x, x2, 0.5))
+			y = math.floor(0.5 + math.lerp(y, y2, 0.5))
+			circle(x, y, 1)
+		end
+	end
+end
+

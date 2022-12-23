@@ -1,0 +1,59 @@
+#!/bin/slug
+
+-- Sierpinski triangle generation using an L-System
+-- see https://en.wikipedia.org/wiki/L-system#Example_5:_Sierpinski_triangle
+
+gen = 0
+start = "F-G-G"
+rules = { F="F-G+F+G-F", G="GG" }
+angle = 120
+len = 50
+current = start
+x = 0
+y = 0
+
+function setup()
+	size(1600, 1400)
+end
+
+function evolve()
+	gen = gen + 1
+	next = ""
+	for i = 1, #current do
+		c = string.sub(current, i, i)
+		r = rules[c]
+		if r ~= nil then
+			next = next .. r
+		else
+			next = next .. c
+		end
+	end
+	current = next
+end
+
+function draw()
+	if gen == 6 then
+		noLoop()
+		return
+	end
+	evolve()
+	background(0)
+	stroke(255)
+	strokeWeight(1)
+	x = width / 2
+	y = height-10
+	for i = 1, #current do
+		c = string.sub(current, i, i)
+		if c == "F" or c == "G" then
+			nx = math.floor(0.5 + x + len * math.cos(radians(angle)))
+			ny = math.floor(0.5 + y + len * math.sin(radians(angle)))
+			line(x, y, nx, ny)
+			x = nx
+			y = ny
+		elseif c == "+" then
+			angle = angle - 120
+		elseif c == "-" then
+			angle = angle + 120
+		end
+	end
+end
